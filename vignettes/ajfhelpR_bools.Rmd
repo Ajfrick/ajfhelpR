@@ -1,0 +1,121 @@
+---
+title: "ajfhelpR_bools v1"
+author: "Andrew Frick"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{str_comb_X Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ajfhelpR)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+One of the first "oops" mistakes I had in R had to do with T | NA == NA instead
+of false. While there are times when you don't want to coerce that to false, I
+decided to create a new set of boolean operators for this case.
+
+First we'll look at the new `equal to` operator `%==%` by creating a data frame of 
+boolean combinations
+
+```{r}
+#Create data frame/tibble with combination of all bools
+
+x = c(T,F,NA)
+
+bools = as.tibble(expand.grid(x,x))
+
+equals = bools %>% 
+  mutate(`==` = (Var1 == Var2),
+         `%==%` = (Var1 %==% Var2))
+```
+
+Below you can see the difference in the output for the original `==` and the 
+`%==%` extension.
+
+```{r}
+equals
+```
+
+Here we'll create another tibble containing the 'venn diagram' boolean operators
+
+1. `|` vs `%or%`
+2. `&` vs `%&%`
+
+```{r}
+
+Venns = bools %>% 
+  mutate(`|` = (Var1 | Var2),
+         `%or%` = (Var1 %or% Var2),
+         `&` = (Var1 & Var2),
+         `%&%` = (Var1 %&% Var2))
+
+```
+
+
+```{r}
+Venns
+```
+
+The equality operator also allows comparison of a single value vs a vector, it
+can be used for subsetting operations. 
+
+x[(condition)] returns all values where (condition) is not false. NA is 
+not interpreted as false by R, so any rows with missing condition will be also
+be returned. To ensure your subset only returns those that are true, we can use
+the `%==%` operator to coerce those to false.
+
+```{r}
+set.seed(12345)
+
+y = 'blue'
+
+colors = c('blue', 'red', 'yellow', NA)
+
+colorsamp = sample(colors, size = 10, prob = c(0.4,0.2,0.1,0.3),
+                   replace = T)
+
+
+y  ==  colorsamp
+y %==% colorsamp
+
+colorsamp[colorsamp == y]
+
+colorsamp[colorsamp %==% y]
+
+```
+
+The `%==%` operator is especially useful for `ifelse` statements. Let's say we 
+change all y to 0 if x is not equal to 'a'
+
+```{r}
+set.seed(12356)
+
+tib = tibble(
+  x = sample(c("a", "b", NA), size = 10, replace = T),
+  y = sample(1:10, size = 10, replace = T)
+)
+
+tib
+
+```
+We see there are 3 rows with `NA`, and depending on how we wish to view the data
+in context, we could consider these to be 1. "not equal to a" or 2. "unknown." 
+
+```{r}
+
+tib = tib %>% 
+  mutate(`y %==%` = ifelse(x %==% 'a', x, 0),
+         `y ==`   = ifelse(x  ==  'a', x, 0))
+
+tib
+```
+The `==` operator perceives `x == NA` as missing and outputs a value of missing
+for the new column. The `%==%` opertor coerces those missing booleans to F, and
+outputs the value of 0. Either of these approaches can be correct based on the
+context of the individual problem. But I've found in data that I work with, 
+`%==%` tends to be more useful.
