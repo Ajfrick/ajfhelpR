@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Andrew Frick" />
+
+<meta name="date" content="2018-12-10" />
+
+<title>str_comb_X Functions WIP v1</title>
+
+<script>$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
+});
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">str_comb_X Functions WIP v1</h1>
+<h4 class="author"><em>Andrew Frick</em></h4>
+<h4 class="date"><em>2018-12-10</em></h4>
+
+
+
+<p>Welcome to my vignette for the <code>str_comb_X</code> functions. Currently there are 3, though I only really use 2 of them. First off, I recommend installing the following packages which I’ll be using extensively in all my guides. And let’s be honest, they’re just pretty dang awesome.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Packages used for demonstration</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># install.packages(&quot;tidyverse&quot;)</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># install.packages(&quot;kableExtra&quot;)</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># install.packages(&quot;pander&quot;)</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># install.packages(&quot;stringr&quot;)</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># install.packages(&quot;knitr&quot;)</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">library</span>(kableExtra)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">library</span>(pander)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">library</span>(rmarkdown)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">library</span>(knitr)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="kw">library</span>(stringr)</a></code></pre></div>
+<div id="summary-of-the-functions" class="section level3">
+<h3>Summary of the Functions</h3>
+<p>These are some functions I wrote primarily for use in creating tables. Rather than repeatedly tell it how to summarise the data and piece it together in a string, I let the function to do the main brunt of work. Being a manager instead of a worker has its perks, after all.</p>
+<p>In my opinion, these tend to work best when used in tandem with dplyr <code>summarise</code> function with grouped data.</p>
+<ul>
+<li><p><code>str_comb_intv</code> takes in continuous variables and outputs an estimate of centrality (your choice), along with an interval estimate (your choice), rounded to a number of digits (your choice), and seperated by a given delimeter (also your choice!).</p></li>
+<li><p><code>str_comb_prop</code> takes in either a logical vector, or a character vector with a supplied category to compare to and counts the numebr of matches along with a proportion. If a logical vector is supplied, no category is needed. This can be output as percentage or a percent, and with or without a <span class="math inline">\(\%\)</span> sign. Of note as well, if you want to treat <span class="math inline">\(0 (0)\)</span> as too uninterseting to matter, you can have it return a single ‘-’ instead. Currently in dev is to handle factors more approporiately.</p></li>
+<li><p><code>str_comb_NA</code> works similarly to <code>str_comb_prop</code> except it works for counting tallying missingness.</p></li>
+<li><p><code>str_comb_full</code> is an extension of st_comb_IQR that also includes the range. It’s not particularly useful, but I needed it for a table once.</p></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Group Iris data by Species, and report summary statistics according to </span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## different str_comb_intv input. Then output table with kableExtra</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">tab =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Length1 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> mean),</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                   <span class="dt">Length2 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">                                          <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>), <span class="dt">digits =</span> <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">                   <span class="dt">Length3 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">                                          <span class="dt">limits =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">delim =</span> <span class="st">&quot;-&quot;</span>),</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">                   <span class="dt">Length4 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> mean,</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">                                          <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>), <span class="dt">delim =</span> <span class="st">&quot; ; &quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>t <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as.tibble</span>()</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">##Format Table more cleanly</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">colnames</span>(tab) =<span class="st"> </span>tab[<span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">tab =<span class="st"> </span>tab[<span class="op">-</span><span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">tab =<span class="st"> </span>tab <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">str_comb_intv =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">knitr<span class="op">::</span><span class="kw">kable</span>(tab,<span class="dt">format =</span> <span class="st">'html'</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;hover&quot;</span>)</a></code></pre></div>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+str_comb_intv
+</th>
+<th style="text-align:left;">
+setosa
+</th>
+<th style="text-align:left;">
+versicolor
+</th>
+<th style="text-align:left;">
+virginica
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+5.01 (4.80,5.20)
+</td>
+<td style="text-align:left;">
+5.94 (5.60,6.30)
+</td>
+<td style="text-align:left;">
+6.59 (6.23,6.90)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+5 (5,5)
+</td>
+<td style="text-align:left;">
+6 (6,6)
+</td>
+<td style="text-align:left;">
+6 (6,7)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+5.00 (4.30-5.80)
+</td>
+<td style="text-align:left;">
+5.90 (4.90-7.00)
+</td>
+<td style="text-align:left;">
+6.50 (4.90-7.90)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+5.01 (4.96 ; 5.10)
+</td>
+<td style="text-align:left;">
+5.94 (5.70 ; 6.04)
+</td>
+<td style="text-align:left;">
+6.59 (6.40 ; 6.70)
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">##Check Count and proportion of observations in mt cars with certain number of </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">##cylinders, using logical vectors, and character vector with category</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">mtcars =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">cyl_chr =</span> <span class="kw">as.character</span>(cyl))</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">mtcars <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Cyl1 =</span> <span class="kw">str_comb_prop</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">                            <span class="dt">Cyl2 =</span> <span class="kw">str_comb_prop</span>(cyl_chr, <span class="st">&quot;4&quot;</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">                            <span class="dt">Cyl3 =</span> <span class="kw">str_comb_prop</span>(cyl_chr <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;8&quot;</span>),</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">                                                 <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>, <span class="dt">perc.disp =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">  </span>t <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">format =</span> <span class="st">'html'</span>)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;hover&quot;</span>)</a></code></pre></div>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cyl1
+</td>
+<td style="text-align:left;">
+11 (34.4)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cyl2
+</td>
+<td style="text-align:left;">
+11 (34.4)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cyl3
+</td>
+<td style="text-align:left;">
+25 (78.1%)
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">##Group mtcars by number of cylinders, and then summarise MPG, Count w prop </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">## of Automatic Transmission, and Horsepower</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">mtcars <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">mpg =</span> <span class="kw">str_comb_intv</span>(mpg),</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">                   <span class="dt">am  =</span> <span class="kw">str_comb_prop</span>(am <span class="op">==</span><span class="st"> </span><span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                   <span class="dt">hp  =</span> <span class="kw">str_comb_intv</span>(<span class="kw">log2</span>(hp<span class="op">+</span><span class="dv">1</span>), <span class="dt">digits =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">                                      <span class="dt">limits =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span>t <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">format =</span> <span class="st">'html'</span>)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;hover&quot;</span>)</a></code></pre></div>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;">
+cyl
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+mpg
+</td>
+<td style="text-align:left;">
+26.00 (22.80,30.40)
+</td>
+<td style="text-align:left;">
+19.70 (18.65,21.00)
+</td>
+<td style="text-align:left;">
+15.20 (14.40,16.25)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+am
+</td>
+<td style="text-align:left;">
+8 (72.7)
+</td>
+<td style="text-align:left;">
+3 (42.9)
+</td>
+<td style="text-align:left;">
+2 (14.3)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hp
+</td>
+<td style="text-align:left;">
+6.5 (5.7,6.8)
+</td>
+<td style="text-align:left;">
+6.8 (6.7,7.5)
+</td>
+<td style="text-align:left;">
+7.6 (7.2,8.4)
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">X =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">na.ind =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">15</span>, <span class="dt">replace =</span> F)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">str_comb_NA</span>(X)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] &quot;-&quot;</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">str_comb_NA</span>(X, <span class="dt">zero2dash =</span> F)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [1] &quot;0 (0)&quot;</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">X[na.ind] =<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">str_comb_NA</span>(X)</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; [1] &quot;15 (15)&quot;</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">str_comb_NA</span>(X, <span class="dt">out =</span> <span class="st">&quot;percentage&quot;</span>)</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; [1] &quot;15 (0.15)&quot;</span></a></code></pre></div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

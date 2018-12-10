@@ -1,0 +1,54 @@
+---
+title: "freq_list, WIP v1"
+author: "Andrew Frick"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{freq_list}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(ajfhelpR)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+freq_list is a function that replicates the functionality of SAS Proc Freq with List option set to true. There are currently some workarounds I'm using in the fucntion that end up being a teensy bit of a nuisance, but they should be remedied soon enough once I get around to it. Specifically, I dislike the `attach` workaround, and aim on fixing it.
+
+Currently, this function accepts an n-dimensional table as input, and then tabulates every full combination of values observed, calculates the frequency and cumulative frequencies, while removing any combinations with frequency of 0.
+
+Cumulative frequency is currently calculated with the rounded frequencies, so rounding errors are occuring. On the short list of fixes
+
+```{r}
+##Tabulate difference combinations amongst the mtcars dataset
+library(stringr)
+library(AVRCHelp)
+library(tidyverse)
+
+attach(mtcars)
+freq_list(table(cyl,vs,am,gear,carb))
+
+# Same as previous, but using head() to extract 5 most frequent combinations
+head(freq_list(table(cyl,vs,am,gear,carb)))
+
+freq_list(table(cyl,vs,am))
+detach(mtcars)
+```
+
+
+
+```{r}
+##tabulate categorical characteristics of diamonds dataset
+
+attach(diamonds)
+
+head(freq_list(table(cut,color,clarity)))
+
+detach(diamonds)
+```
+
+

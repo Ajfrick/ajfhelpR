@@ -1,0 +1,124 @@
+---
+title: "str_comb_X Functions WIP v1"
+author: "Andrew Frick"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{str_comb_X Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(ajfhelpR)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to my vignette for the `str_comb_X` functions. Currently there are 3, though I only really use 2 of them. First off, I recommend installing the following packages which I'll be using extensively in all my guides. And let's be honest, they're just pretty dang awesome.
+
+```{r, include = T, echo = T}
+## Packages used for demonstration
+
+# install.packages("tidyverse")
+# install.packages("kableExtra")
+# install.packages("pander")
+# install.packages("stringr")
+# install.packages("knitr")
+
+library(tidyverse)
+library(kableExtra)
+library(pander)
+library(rmarkdown)
+library(knitr)
+library(stringr)
+```
+
+### Summary of the Functions
+
+These are some functions I wrote primarily for use in creating tables. Rather than repeatedly tell it how to summarise the data and piece it together in a string, I let the function to do the main brunt of work. Being a manager instead of a worker has its perks, after all. 
+
+In my opinion, these tend to work best when used in tandem with dplyr `summarise` function with grouped data. 
+
+* `str_comb_intv` takes in continuous variables and outputs an estimate of centrality (your choice), along with an interval estimate (your choice), rounded to a number of digits (your choice), and seperated by a given delimeter (also your choice!). 
+
+* `str_comb_prop` takes in either a logical vector, or a character vector with a supplied category to compare to and counts the numebr of matches along with a proportion. If a logical vector is supplied, no category is needed. This can be output as percentage or a percent, and with or without a $\%$ sign. Of note as well, if you want to treat $0 (0)$ as too uninterseting to matter, you can have it return a single '-' instead. Currently in dev is to handle factors more approporiately.
+
+* `str_comb_NA` works similarly to `str_comb_prop` except it works for counting tallying missingness. 
+
+* `str_comb_full` is an extension of st_comb_IQR that also includes the range. It's not particularly useful, but I needed it for a table once.
+
+
+
+```{r}
+## Group Iris data by Species, and report summary statistics according to 
+## different str_comb_intv input. Then output table with kableExtra
+
+tab = iris %>% dplyr::group_by(Species) %>% 
+  dplyr::summarise(Length1 = str_comb_intv(Sepal.Length, fun = mean),
+                   Length2 = str_comb_intv(Sepal.Length, fun = median,
+                                          limits = c(0.2, 0.6), digits = 0),
+                   Length3 = str_comb_intv(Sepal.Length, fun = median,
+                                          limits = 0:1, delim = "-"),
+                   Length4 = str_comb_intv(Sepal.Length, fun = mean,
+                                          limits = c(0.4, 0.6), delim = " ; ")) %>% t %>% 
+  tibble::as.tibble()
+
+##Format Table more cleanly
+colnames(tab) = tab[1,]
+tab = tab[-1,]
+
+tab = tab %>% dplyr::mutate(str_comb_intv = 1:4) %>% 
+  dplyr::select(c(4,1:3))
+
+knitr::kable(tab,format = 'html') %>% 
+  kableExtra::kable_styling(bootstrap_options = "hover")
+```
+
+```{r }
+##Check Count and proportion of observations in mt cars with certain number of 
+##cylinders, using logical vectors, and character vector with category
+
+mtcars = mtcars %>% 
+  dplyr::mutate(cyl_chr = as.character(cyl))
+
+mtcars %>% dplyr::summarise(Cyl1 = str_comb_prop(cyl == 4, out = "percent"),
+                            Cyl2 = str_comb_prop(cyl_chr, "4", out = "percent"),
+                            Cyl3 = str_comb_prop(cyl_chr %in% c("4","8"),
+                                                 out = "percent", perc.disp = T)) %>% 
+  t %>% knitr::kable(format = 'html')  %>% 
+  kableExtra::kable_styling(bootstrap_options = "hover")
+
+```
+
+```{r }
+##Group mtcars by number of cylinders, and then summarise MPG, Count w prop 
+## of Automatic Transmission, and Horsepower
+
+mtcars %>% dplyr::group_by(cyl) %>% 
+  dplyr::summarise(mpg = str_comb_intv(mpg),
+                   am  = str_comb_prop(am == 1),
+                   hp  = str_comb_intv(log2(hp+1), digits = 1,
+                                      limits = 0:1)) %>% 
+  t %>% knitr::kable(format = 'html')  %>% 
+  kableExtra::kable_styling(bootstrap_options = "hover")
+  
+```
+
+
+```{r}
+X = 1:100
+na.ind = sample(1:100, 15, replace = F)
+
+str_comb_NA(X)
+str_comb_NA(X, zero2dash = F)
+
+X[na.ind] = NA
+
+str_comb_NA(X)
+str_comb_NA(X, out = "percentage")
+
+```
+
