@@ -1,0 +1,24 @@
+Package: ajfhelpR
+Type: Package
+Title: General Assistance for EDA and table generation
+Version: 0.1.0
+URL: https://github.com/Ajfrick/ajfhelpR
+Author@R: person("Andrew", "Frick", email = "ajfrick71@gmail.com",
+                  role = c("aut", "cre"))
+Description: Contains a variety of functions to speed up EDA process and 
+    generation of dynamic tables in knitr. Designed to work with tidy data
+    and tibbles.
+License: GPL-2
+Encoding: UTF-8
+Imports:
+    stringr (>= 1.2.0),
+    dplyr,
+    tidyr,
+    tibble,
+    magrittr,
+    MASS
+LazyData: true
+RoxygenNote: 6.1.0
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
