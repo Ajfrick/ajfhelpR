@@ -1,7 +1,7 @@
-#' Create middle IQR string from numeric vector
+#' Find columns containing string or regular expression
 #'
 #' @param dat data frame, tibble, or named vector
-#' @param pattern character vector to search for
+#' @param pattern character vector or regular expression to search for
 #' @param ignore.case logical for case sensitivity
 #' @return named vector with column or index locations with variable names
 #' @examples

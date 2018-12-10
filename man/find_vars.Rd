@@ -2,14 +2,14 @@
 % Please edit documentation in R/find_vars.R
 \name{find_vars}
 \alias{find_vars}
-\title{Create middle IQR string from numeric vector}
+\title{Find columns containing string or regular expression}
 \usage{
 find_vars(dat, pattern, ignore.case = TRUE)
 }
 \arguments{
 \item{dat}{data frame, tibble, or named vector}
 
-\item{pattern}{character vector to search for}
+\item{pattern}{character vector or regular expression to search for}
 
 \item{ignore.case}{logical for case sensitivity}
 }
@@ -17,7 +17,7 @@ find_vars(dat, pattern, ignore.case = TRUE)
 named vector with column or index locations with variable names
 }
 \description{
-Create middle IQR string from numeric vector
+Find columns containing string or regular expression
 }
 \examples{
 find_vars(mtcars, "cyl")
