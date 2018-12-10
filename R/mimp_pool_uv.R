@@ -8,7 +8,6 @@
 #'
 mimp_pool_uv = function(q,u){
 
-
   m = length(q)
   qbar = mean(q)
 
