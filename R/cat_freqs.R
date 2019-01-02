@@ -1,4 +1,5 @@
 #' Create column for frequency distribution of data
+#'
 #' @param x vector of characters or factors
 #' @param omit.na logical for ommision of NAs in computation of counts and
 #' proportions

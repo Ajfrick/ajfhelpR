@@ -1,4 +1,4 @@
-#' Count Missing
+#' Count missing observations from vector
 #'
 #' @param x Vector
 #' @return integer for number of missing

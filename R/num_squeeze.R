@@ -4,7 +4,7 @@
 #' @param high upper limit of numeric range
 #' @description Coerces numbers outside the specified range to the min or max
 #' value. low and high arguments default to `-Inf` and `Inf`
-#' Function will return NULL if lower
+#' Function will return NULL if lower bound is larger than upper bound
 #' @return numeric vector
 #' @examples
 #' x = -100:100

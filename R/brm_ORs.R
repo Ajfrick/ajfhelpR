@@ -1,4 +1,3 @@
-
 #' Generate Odds Ratios from logit link brm model
 #'
 #' @param fit model fit by brm function

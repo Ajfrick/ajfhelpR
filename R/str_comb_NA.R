@@ -13,12 +13,12 @@
 #' str_comb_NA(x, out = "percentage")
 #'
 #' x = 1:200
-#' str_comb_NA(x)
+#' str_comb_na(x)
 #'
 #' x[ind] = NA
-#' str_comb_NA(x)
+#' str_comb_na(x)
 
-str_comb_NA = function(x, digits = 1,
+str_comb_na = function(x, digits = 1,
                        out = c("percentage","percent"),
                        zero2dash = T){
   if(missing(out)) out = "percent"

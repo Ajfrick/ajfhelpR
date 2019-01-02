@@ -1,4 +1,4 @@
-#' freq_list
+#' Replicates SAS PROC FREQ LIST functionality
 #'
 #' @param tab table to format
 #' @description Reformats table/3D Array into frequency list

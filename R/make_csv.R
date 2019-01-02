@@ -1,4 +1,5 @@
 #' write.csv with more useful Defaults
+#'
 #' @param data data frame to output to csv
 #' @param file name of the file to write to
 #' @description Replicates functionality of write.csv but with default options

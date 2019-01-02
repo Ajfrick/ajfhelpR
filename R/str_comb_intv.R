@@ -8,10 +8,10 @@
 #' @return Character String of the form \code{fun(x) <delim> (Q1,Q3)}
 #' @examples
 #' x = seq(1,100)
-#' str_comb_Intv(x,digits = 3)
-#' str_comb_Intv(x, lower = 0.1, upper = 0.85)
-#' str_comb_Intv(x^2,fun = median, delim = " - ")
-#' str_comb_Intv(x^2,fun = mean, delim = "_")
+#' str_comb_intv(x,digits = 3)
+#' str_comb_intv(x, lower = 0.1, upper = 0.85)
+#' str_comb_intv(x^2,fun = median, delim = " - ")
+#' str_comb_intv(x^2,fun = mean, delim = "_")
 
 str_comb_intv = function(x, fun = median, digits = 2, delim = ",",
                         limits = c(0.25,0.75)){
@@ -25,9 +25,9 @@ str_comb_intv = function(x, fun = median, digits = 2, delim = ",",
 
   limits = sort(limits)
 
-  Intv = round(quantile(as.numeric(x), probs = c(limits[1],limits[2]), na.rm = T), digits = digits)
+  intv = round(quantile(as.numeric(x), probs = c(limits[1],limits[2]), na.rm = T), digits = digits)
 
   return(stringr::str_c(print_dec(Cent,digits)," (",
-                        print_dec(Intv[1],digits), delim,
-                        print_dec(Intv[2],digits), ")"))
+                        print_dec(intv[1],digits), delim,
+                        print_dec(intv[2],digits), ")"))
 }

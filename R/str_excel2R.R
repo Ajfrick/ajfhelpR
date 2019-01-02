@@ -1,8 +1,8 @@
-
-#' Replace PI excel column names with R friendly names
+#' Replace manuall extry Excel column names with R friendly names
 #'
 #' @param colname character vector for column names in dataset
 #' @return character vector with R friendly column names
+#' @description Removes spaces, dashes, slashes, quotes, etc from column names
 #' @examples
 #' Coming soon
 

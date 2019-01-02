@@ -2,7 +2,7 @@
 #' @param left Left side of operator
 #' @param right right side of operator
 #' @description Replicates `|` behavior, but returns F instead of NA when making comparisons
-#' of F or NA. NA & NA still returns missing when comparing equal length
+#' of F or NA. NA | NA still returns missing when comparing equal length
 #' vectors.
 #'
 #' Left and Right sides must be same length, or one of them length 1.
