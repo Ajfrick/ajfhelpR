@@ -7,12 +7,11 @@
 #' @return Character String of the form \code{fun(x) <delim> (Q1,Q3) [min,max]}
 #' @examples
 #' x = seq(1,100)
-#' str_comb_full(x,digits = 3)
-#' str_comb_full(x, lower = 0.1, upper = 0.85)
-#' str_comb_full(x^2,fun = median, delim = " - ")
-#' str_comb_full(x^2,fun = mean, delim = "_")
-
-str_comb_full = function(x, fun = median, digits = 2, delim = ","){
+#' summ_full(x,digits = 3)
+#' summ_full(x, lower = 0.1, upper = 0.85)
+#' summ_full(x^2,fun = median, delim = " - ")
+#' summ_full(x^2,fun = mean, delim = "_")
+summ_full = function(x, fun = median, digits = 2, delim = ","){
 
   full = round(quantile(as.numeric(x),probs = seq(0,1,by=0.25),na.rm=T),
                digits = digits)

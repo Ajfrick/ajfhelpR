@@ -9,12 +9,12 @@
 #' @return Character String of the form "N ( \% )"
 #' @examples
 #' x = sample(1:3, size = 20, replace = T)
-#' str_comb_prop(x, category = 2,digits = 3)
-#' str_comb_prop(x, category = 1, out = "percent")
-#' str_comb_prop(x == 1)
-#' str_comb_prop(x %in% 1:3)
+#' summ_prop(x, category = 2,digits = 3)
+#' summ_prop(x, category = 1, out = "percent")
+#' summ_prop(x == 1)
+#' summ_prop(x %in% 1:3)
 
-str_comb_prop = function(x, category = NULL, na.rm = T, digits = 1,
+summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
                          out = c("percentage","percent"),
                          perc.disp = F, escape = F,
                          zero2dash = T){

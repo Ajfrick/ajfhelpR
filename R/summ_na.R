@@ -9,16 +9,16 @@
 #' x = 1:100
 #' ind = sample(1:100, 10, replace = F)
 #' x[ind] = NA
-#' str_comb_NA(x, out = "percent")
-#' str_comb_NA(x, out = "percentage")
+#' summ_na(x, out = "percent")
+#' summ_na(x, out = "percentage")
 #'
 #' x = 1:200
-#' str_comb_NA(x)
+#' summ_na(x)
 #'
 #' x[ind] = NA
-#' str_comb_NA(x)
+#' summ_na(x)
 
-str_comb_NA = function(x, digits = 1,
+summ_na = function(x, digits = 1,
                        out = c("percentage","percent"),
                        zero2dash = T){
   if(missing(out)) out = "percent"

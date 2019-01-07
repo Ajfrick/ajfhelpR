@@ -8,12 +8,12 @@
 #' @return Character String of the form \code{fun(x) <delim> (Q1,Q3)}
 #' @examples
 #' x = seq(1,100)
-#' str_comb_Intv(x,digits = 3)
-#' str_comb_Intv(x, lower = 0.1, upper = 0.85)
-#' str_comb_Intv(x^2,fun = median, delim = " - ")
-#' str_comb_Intv(x^2,fun = mean, delim = "_")
+#' summ_interval(x,digits = 3)
+#' summ_interval(x, lower = 0.1, upper = 0.85)
+#' summ_interval(x^2,fun = median, delim = " - ")
+#' summ_interval(x^2,fun = mean, delim = "_")
 
-str_comb_intv = function(x, fun = median, digits = 2, delim = ",",
+summ_interval = function(x, fun = median, digits = 2, delim = ",",
                         limits = c(0.25,0.75)){
 
   Cent = round(fun(as.numeric(x), na.rm = T), digits = digits)
