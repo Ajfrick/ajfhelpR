@@ -8,7 +8,7 @@
 #' @param escape logical for inclusion of escape character for LaTeX tables
 #' @param zero2dash logical for returning "-" instead of "0 (0)" for tables
 #' @return dataframe/tibble with two columns, one for category name, and one with
-#' N (\\%) output from str_comb_prop function
+#' N (\\%) output from summ_prop function
 #' @examples
 #' dat = iris
 #' specs = dat$Species
@@ -46,12 +46,12 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
   cats = as.character(names(table(x, useNA = 'ifany')))
 
   tib = dplyr::tibble(
-    N = str_comb_prop(x %==% cats[1], digits = digits, out = out,
+    N = summ_prop(x %==% cats[1], digits = digits, out = out,
                       perc.disp = perc.disp, zero2dash = zero2dash,
                       escape = escape)
   )
   for(i in 2:M){
-    tib[i,1] = str_comb_prop(x %==% cats[i], digits = digits, out = out,
+    tib[i,1] = summ_prop(x %==% cats[i], digits = digits, out = out,
                              perc.disp = perc.disp, zero2dash = zero2dash,
                              escape = escape)
   }
@@ -62,7 +62,7 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
 
     return(tib)
   }else{
-    tib[(M+1),1] = str_comb_prop(is.na(x), digits = digits, out = out,
+    tib[(M+1),1] = summ_prop(is.na(x), digits = digits, out = out,
                                  perc.disp = perc.disp, zero2dash = zero2dash)
 
    tib = tib %>%
