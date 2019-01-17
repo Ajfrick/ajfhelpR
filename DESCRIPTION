@@ -11,14 +11,14 @@ Description: Contains a variety of functions to speed up EDA process and
 License: GPL-2
 Encoding: UTF-8
 Imports:
-    stringr (>= 1.2.0),
+    stringr,
     dplyr,
     tidyr,
-    tibble,
     magrittr,
     MASS
 LazyData: true
 RoxygenNote: 6.1.0
 Suggests: knitr,
+    tibble,
     rmarkdown
 VignetteBuilder: knitr

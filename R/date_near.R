@@ -18,7 +18,6 @@
 #' date_near(x,y, sidepref = 'r')
 #' date_near(x,y, thresh = 1)
 #' date_near(x,"2011-01-12", onlypre = T)
-#'
 
 date_near = function(dates, target, thresh = Inf, onlypre = F,
                      sidepref, quiet = T){
