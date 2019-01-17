@@ -6,7 +6,8 @@
 #' @examples
 #' Coming soon
 
-excel2R = function(colname){
+str_excel2R = function(colname){
+  colname = stringr::str_replace_all(colname,"#","num")
   colname = stringr::str_replace_all(colname," |-","_")
   colname = stringr::str_replace_all(colname,"'|\\(|\\)|/","")
   return(colname)
