@@ -15,9 +15,9 @@
 #' summ_prop(x %in% 1:3)
 
 summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
-                         out = c("percentage","percent"),
-                         perc.disp = F, escape = F,
-                         zero2dash = T){
+                     incl_denom = F,
+                     out = c("percentage","percent"),perc.disp = F,
+                     escape = F,zero2dash = T){
   if(missing(out)) out = "percent"
   if(typeof(category) == "double") category = as.integer(category)
   if(typeof(x) == "double") x = as.integer(x)
@@ -29,7 +29,7 @@ summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
 
   N = sum(x == category, na.rm = na.rm)
 
-  Tot = length(na.omit(x))
+  Tot = ifelse(na.rm, length(na.omit(x)), length(x))
 
   p = print_dec(ifelse(tolower(out) == "percentage",round(N/Tot, digits = digits+2),
              ifelse(tolower(out) == "percent",round(100*N/Tot, digits = digits),
@@ -40,6 +40,9 @@ summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
   }
   if(perc.disp == T & tolower(out) == "percent"){ #add \% if requested
     p = stringr::str_c(p,ifelse(escape,"\\\\%","%"))
+  }
+  if(incl_denom){
+    N = stringr::str_c(N,"/",Tot)
   }
   return(stringr::str_c(N, " (",p,")"))
 }
