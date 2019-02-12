@@ -5,7 +5,7 @@
 \title{Create column for frequency distribution of data}
 \usage{
 cat_freqs(x, omit.na = F, NAname = NA, digits = 1,
-  out = c("percentage", "percent"), perc.disp = F, escape = F,
+  out = c("percentage", "percent"), perc_disp = F, escape = F,
   zero2dash = T)
 }
 \arguments{
@@ -18,7 +18,7 @@ proportions}
 
 \item{out}{single character representing output for proportion}
 
-\item{perc.disp}{logical for inclustion of \% sign}
+\item{perc_disp}{logical for inclustion of \% sign}
 
 \item{escape}{logical for inclusion of escape character for LaTeX tables}
 
@@ -26,7 +26,7 @@ proportions}
 }
 \value{
 dataframe/tibble with two columns, one for category name, and one with
-N (\\%) output from str_comb_prop function
+N (\\%) output from summ_prop function
 }
 \description{
 Create column for frequency distribution of data

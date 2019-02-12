@@ -4,7 +4,7 @@
 #' proportions
 #' @param digits number of digits to round
 #' @param out single character representing output for proportion
-#' @param perc.disp logical for inclustion of \% sign
+#' @param perc_disp logical for inclustion of \% sign
 #' @param escape logical for inclusion of escape character for LaTeX tables
 #' @param zero2dash logical for returning "-" instead of "0 (0)" for tables
 #' @return dataframe/tibble with two columns, one for category name, and one with
@@ -27,7 +27,7 @@
 
 cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
                      out = c("percentage","percent"),
-                     perc.disp = F, escape = F,
+                     perc_disp = F, escape = F,
                      zero2dash = T){
 
   if(missing(out)) out = "percent"
@@ -47,12 +47,12 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
 
   tib = dplyr::tibble(
     N = summ_prop(x %==% cats[1], digits = digits, out = out,
-                      perc.disp = perc.disp, zero2dash = zero2dash,
+                      perc_disp = perc_disp, zero2dash = zero2dash,
                       escape = escape)
   )
   for(i in 2:M){
     tib[i,1] = summ_prop(x %==% cats[i], digits = digits, out = out,
-                             perc.disp = perc.disp, zero2dash = zero2dash,
+                             perc_disp = perc_disp, zero2dash = zero2dash,
                              escape = escape)
   }
   if(omit.na | (sum(is.na(x)) == 0)){
@@ -63,7 +63,7 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
     return(tib)
   }else{
     tib[(M+1),1] = summ_prop(is.na(x), digits = digits, out = out,
-                                 perc.disp = perc.disp, zero2dash = zero2dash)
+                                 perc_disp = perc_disp, zero2dash = zero2dash)
 
    tib = tib %>%
       dplyr::mutate(Cat = cats) %>%

@@ -1,9 +1,11 @@
 #' Create count with proportion as string
 #' @param x vector
 #' @param category Category to count x matches (not required if x logical)
+#' @param omit_na logical for removal of missing values when reporting porportion
 #' @param digits number of digits to round
+#' @param incl_denom logical for inclusion of denominator in frequency
 #' @param out single character representing output for proportion
-#' @param perc.disp logical for inclusion of \% sign
+#' @param perc_disp logical for inclusion of \% sign
 #' @param escape logical for inclusion of escape character for LaTeX tables
 #' @param zero2dash logical for returning "-" instead of "0 (0)" for tables
 #' @return Character String of the form "N ( \% )"
@@ -14,9 +16,9 @@
 #' summ_prop(x == 1)
 #' summ_prop(x %in% 1:3)
 
-summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
+summ_prop = function(x, category = NULL, omit_na = T, digits = 1,
                      incl_denom = F,
-                     out = c("percentage","percent"),perc.disp = F,
+                     out = c("percentage","percent"),perc_disp = F,
                      escape = F,zero2dash = T){
   if(missing(out)) out = "percent"
   if(typeof(category) == "double") category = as.integer(category)
@@ -27,9 +29,9 @@ summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
   }
   if(is.logical(x) & is.null(category)) category = T
 
-  N = sum(x == category, na.rm = na.rm)
+  N = sum(x == category, na.rm = omit_na)
 
-  Tot = ifelse(na.rm, length(na.omit(x)), length(x))
+  Tot = ifelse(omit_na, length(na.omit(x)), length(x))
 
   p = print_dec(ifelse(tolower(out) == "percentage",round(N/Tot, digits = digits+2),
              ifelse(tolower(out) == "percent",round(100*N/Tot, digits = digits),
@@ -38,7 +40,7 @@ summ_prop = function(x, category = NULL, na.rm = T, digits = 1,
   if(zero2dash == T & N == "0"){ #coerce 0 (0) -> '-'
     return("-")
   }
-  if(perc.disp == T & tolower(out) == "percent"){ #add \% if requested
+  if(perc_disp == T & tolower(out) == "percent"){ #add \% if requested
     p = stringr::str_c(p,ifelse(escape,"\\\\%","%"))
   }
   if(incl_denom){

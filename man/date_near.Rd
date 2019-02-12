@@ -35,5 +35,4 @@ date_near(x,y, sidepref = 'l')
 date_near(x,y, sidepref = 'r')
 date_near(x,y, thresh = 1)
 date_near(x,"2011-01-12", onlypre = T)
-
 }
