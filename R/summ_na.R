@@ -2,6 +2,7 @@
 #'
 #' @param x Vector
 #' @param digits Number of decimal points to round to
+#' @param incl_denom logical for inclusion of denominator in frequency
 #' @param out return percent or percentage
 #' @param zero2dash automatically change '0 (0)' to '-'
 #' @return N (\%) of Number missing
@@ -18,7 +19,7 @@
 #' x[ind] = NA
 #' summ_na(x)
 
-summ_na = function(x, digits = 1,
+summ_na = function(x, digits = 1, incl_denom = F,
                        out = c("percentage","percent"),
                        zero2dash = T){
   if(missing(out)) out = "percent"
@@ -33,6 +34,9 @@ summ_na = function(x, digits = 1,
 
   if(zero2dash == T & N == "0"){ #coerce 0 (0) -> '-'
     return("-")
+  }
+  if(incl_denom){
+    N = stringr::str_c(N, "/", Tot)
   }
 
   return(stringr::str_c(N, " (",p,")"))
