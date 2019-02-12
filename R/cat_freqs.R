@@ -1,8 +1,9 @@
 #' Create column for frequency distribution of data
 #' @param x vector of characters or factors
-#' @param omit.na logical for ommision of NAs in computation of counts and
+#' @param omit_na logical for ommision of NAs in computation of counts and
 #' proportions
 #' @param digits number of digits to round
+#' @param incl_denom logical for inclusion of denominator when displaying frequencies
 #' @param out single character representing output for proportion
 #' @param perc_disp logical for inclustion of \% sign
 #' @param escape logical for inclusion of escape character for LaTeX tables
@@ -21,17 +22,18 @@
 #' index_na = sample(1:nrow(dat), size = 25, replace = F)
 #' dat[index_na,]$Species = NA
 #'
-#' # Different output based on arguments to `omit.na`
-#' cat_freqs(dat$Species) #omit.na = F default
-#' cat_freqs(dat$Species, omit.na = T)
+#' # Different output based on arguments to `omit_na`
+#' cat_freqs(dat$Species) #omit_na = F default
+#' cat_freqs(dat$Species, omit_na = T)
 
-cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
+cat_freqs = function(x, omit_na = F, NAname = NA, digits = 1,
+                     incl_denom = F,
                      out = c("percentage","percent"),
                      perc_disp = F, escape = F,
                      zero2dash = T){
 
   if(missing(out)) out = "percent"
-  if(omit.na){
+  if(omit_na){
     x = na.omit(x)
   }
 
@@ -47,15 +49,15 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
 
   tib = dplyr::tibble(
     N = summ_prop(x %==% cats[1], digits = digits, out = out,
-                      perc_disp = perc_disp, zero2dash = zero2dash,
-                      escape = escape)
+                  perc_disp = perc_disp, zero2dash = zero2dash,
+                  incl_denom = incl_denom,escape = escape)
   )
   for(i in 2:M){
     tib[i,1] = summ_prop(x %==% cats[i], digits = digits, out = out,
-                             perc_disp = perc_disp, zero2dash = zero2dash,
-                             escape = escape)
+                         perc_disp = perc_disp, zero2dash = zero2dash,
+                         incl_denom = incl_denom,escape = escape)
   }
-  if(omit.na | (sum(is.na(x)) == 0)){
+  if(omit_na | (sum(is.na(x)) == 0)){
     tib = tib %>%
       dplyr::mutate(Cat = cats) %>%
       dplyr::select(Cat,N)
@@ -63,8 +65,8 @@ cat_freqs = function(x, omit.na = F, NAname = NA, digits = 1,
     return(tib)
   }else{
     tib[(M+1),1] = summ_prop(is.na(x), digits = digits, out = out,
-                                 perc_disp = perc_disp, zero2dash = zero2dash)
-
+                             perc_disp = perc_disp, zero2dash = zero2dash,
+                             incl_denom = incl_denom,escape = escape)
    tib = tib %>%
       dplyr::mutate(Cat = cats) %>%
       dplyr::select(Cat,N)

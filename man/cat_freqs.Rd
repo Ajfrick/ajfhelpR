@@ -4,17 +4,19 @@
 \alias{cat_freqs}
 \title{Create column for frequency distribution of data}
 \usage{
-cat_freqs(x, omit.na = F, NAname = NA, digits = 1,
+cat_freqs(x, omit_na = F, NAname = NA, digits = 1, incl_denom = F,
   out = c("percentage", "percent"), perc_disp = F, escape = F,
   zero2dash = T)
 }
 \arguments{
 \item{x}{vector of characters or factors}
 
-\item{omit.na}{logical for ommision of NAs in computation of counts and
+\item{omit_na}{logical for ommision of NAs in computation of counts and
 proportions}
 
 \item{digits}{number of digits to round}
+
+\item{incl_denom}{logical for inclusion of denominator when displaying frequencies}
 
 \item{out}{single character representing output for proportion}
 
@@ -43,7 +45,7 @@ set.seed(314159)
 index_na = sample(1:nrow(dat), size = 25, replace = F)
 dat[index_na,]$Species = NA
 
-# Different output based on arguments to `omit.na`
-cat_freqs(dat$Species) #omit.na = F default
-cat_freqs(dat$Species, omit.na = T)
+# Different output based on arguments to `omit_na`
+cat_freqs(dat$Species) #omit_na = F default
+cat_freqs(dat$Species, omit_na = T)
 }
