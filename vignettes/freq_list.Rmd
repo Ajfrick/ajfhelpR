@@ -26,7 +26,7 @@ Cumulative frequency is currently calculated with the rounded frequencies, so ro
 ```{r}
 ##Tabulate difference combinations amongst the mtcars dataset
 library(stringr)
-library(AVRCHelp)
+library(ajfhelpR)
 library(tidyverse)
 
 attach(mtcars)

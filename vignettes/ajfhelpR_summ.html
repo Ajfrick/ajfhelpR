@@ -12,9 +12,9 @@
 
 <meta name="author" content="Andrew Frick" />
 
-<meta name="date" content="2018-12-10" />
+<meta name="date" content="2019-02-12" />
 
-<title>str_comb_X Functions WIP v1</title>
+<title>summ_X Functions WIP v1</title>
 
 <script>$(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
@@ -24,7 +24,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
@@ -86,7 +86,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -281,13 +303,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<h1 class="title toc-ignore">str_comb_X Functions WIP v1</h1>
+<h1 class="title toc-ignore">summ_X Functions WIP v1</h1>
 <h4 class="author"><em>Andrew Frick</em></h4>
-<h4 class="date"><em>2018-12-10</em></h4>
+<h4 class="date"><em>2019-02-12</em></h4>
 
 
 
-<p>Welcome to my vignette for the <code>str_comb_X</code> functions. Currently there are 3, though I only really use 2 of them. First off, I recommend installing the following packages which I’ll be using extensively in all my guides. And let’s be honest, they’re just pretty dang awesome.</p>
+<p>Welcome to my vignette for the <code>summ_X</code> functions. Currently there are 3, though I only really use 2 of them. First off, I recommend installing the following packages which I’ll be using extensively in all my guides. And let’s be honest, they’re just pretty dang awesome.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Packages used for demonstration</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># install.packages(&quot;tidyverse&quot;)</span></a>
@@ -307,21 +329,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>These are some functions I wrote primarily for use in creating tables. Rather than repeatedly tell it how to summarise the data and piece it together in a string, I let the function to do the main brunt of work. Being a manager instead of a worker has its perks, after all.</p>
 <p>In my opinion, these tend to work best when used in tandem with dplyr <code>summarise</code> function with grouped data.</p>
 <ul>
-<li><p><code>str_comb_intv</code> takes in continuous variables and outputs an estimate of centrality (your choice), along with an interval estimate (your choice), rounded to a number of digits (your choice), and seperated by a given delimeter (also your choice!).</p></li>
-<li><p><code>str_comb_prop</code> takes in either a logical vector, or a character vector with a supplied category to compare to and counts the numebr of matches along with a proportion. If a logical vector is supplied, no category is needed. This can be output as percentage or a percent, and with or without a <span class="math inline">\(\%\)</span> sign. Of note as well, if you want to treat <span class="math inline">\(0 (0)\)</span> as too uninterseting to matter, you can have it return a single ‘-’ instead. Currently in dev is to handle factors more approporiately.</p></li>
-<li><p><code>str_comb_NA</code> works similarly to <code>str_comb_prop</code> except it works for counting tallying missingness.</p></li>
-<li><p><code>str_comb_full</code> is an extension of st_comb_IQR that also includes the range. It’s not particularly useful, but I needed it for a table once.</p></li>
+<li><p><code>summ_interval</code> takes in continuous variables and outputs an estimate of centrality (your choice), along with an interval estimate (your choice), rounded to a number of digits (your choice), and seperated by a given delimeter (also your choice!).</p></li>
+<li><p><code>summ_prop</code> takes in either a logical vector, or a character vector with a supplied category to compare to and counts the numebr of matches along with a proportion. If a logical vector is supplied, no category is needed. This can be output as percentage or a percent, and with or without a <span class="math inline">\(\%\)</span> sign. Of note as well, if you want to treat <span class="math inline">\(0 (0)\)</span> as too uninterseting to matter, you can have it return a single ‘-’ instead. Currently in dev is to handle factors more approporiately.</p></li>
+<li><p><code>summ_na</code> works similarly to <code>summ_prop</code> except it works for counting tallying missingness.</p></li>
+<li><p><code>summ_full</code> is an extension of st_comb_IQR that also includes the range. It’s not particularly useful, but I needed it for a table once.</p></li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Group Iris data by Species, and report summary statistics according to </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## different str_comb_intv input. Then output table with kableExtra</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## different summ_interval input. Then output table with kableExtra</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">tab =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Length1 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> mean),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                   <span class="dt">Length2 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Length1 =</span> <span class="kw">summ_interval</span>(Sepal.Length, <span class="dt">fun =</span> mean),</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                   <span class="dt">Length2 =</span> <span class="kw">summ_interval</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">                                          <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>), <span class="dt">digits =</span> <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">                   <span class="dt">Length3 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">                   <span class="dt">Length3 =</span> <span class="kw">summ_interval</span>(Sepal.Length, <span class="dt">fun =</span> median,</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">                                          <span class="dt">limits =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">delim =</span> <span class="st">&quot;-&quot;</span>),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">                   <span class="dt">Length4 =</span> <span class="kw">str_comb_intv</span>(Sepal.Length, <span class="dt">fun =</span> mean,</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">                   <span class="dt">Length4 =</span> <span class="kw">summ_interval</span>(Sepal.Length, <span class="dt">fun =</span> mean,</a>
 <a class="sourceLine" id="cb2-11" data-line-number="11">                                          <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>), <span class="dt">delim =</span> <span class="st">&quot; ; &quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>t <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as.tibble</span>()</a>
 <a class="sourceLine" id="cb2-13" data-line-number="13"></a>
@@ -329,7 +351,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw">colnames</span>(tab) =<span class="st"> </span>tab[<span class="dv">1</span>,]</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">tab =<span class="st"> </span>tab[<span class="op">-</span><span class="dv">1</span>,]</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">tab =<span class="st"> </span>tab <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">str_comb_intv =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">tab =<span class="st"> </span>tab <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">summ_interval =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>))</a>
 <a class="sourceLine" id="cb2-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb2-21" data-line-number="21">knitr<span class="op">::</span><span class="kw">kable</span>(tab,<span class="dt">format =</span> <span class="st">'html'</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -338,7 +360,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <thead>
 <tr>
 <th style="text-align:right;">
-str_comb_intv
+summ_interval
 </th>
 <th style="text-align:left;">
 setosa
@@ -416,10 +438,10 @@ virginica
 <a class="sourceLine" id="cb3-4" data-line-number="4">mtcars =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">cyl_chr =</span> <span class="kw">as.character</span>(cyl))</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">mtcars <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Cyl1 =</span> <span class="kw">str_comb_prop</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">                            <span class="dt">Cyl2 =</span> <span class="kw">str_comb_prop</span>(cyl_chr, <span class="st">&quot;4&quot;</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">                            <span class="dt">Cyl3 =</span> <span class="kw">str_comb_prop</span>(cyl_chr <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;8&quot;</span>),</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">                                                 <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>, <span class="dt">perc.disp =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">mtcars <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">Cyl1 =</span> <span class="kw">summ_prop</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">                            <span class="dt">Cyl2 =</span> <span class="kw">summ_prop</span>(cyl_chr, <span class="st">&quot;4&quot;</span>, <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>),</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">                            <span class="dt">Cyl3 =</span> <span class="kw">summ_prop</span>(cyl_chr <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;8&quot;</span>),</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">                                                 <span class="dt">out =</span> <span class="st">&quot;percent&quot;</span>, <span class="dt">perc_disp =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">  </span>t <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">format =</span> <span class="st">'html'</span>)  <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;hover&quot;</span>)</a></code></pre></div>
 <table class="table table-hover" style="margin-left: auto; margin-right: auto;">
@@ -454,9 +476,9 @@ Cyl3
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">## of Automatic Transmission, and Horsepower</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">mtcars <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">mpg =</span> <span class="kw">str_comb_intv</span>(mpg),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">                   <span class="dt">am  =</span> <span class="kw">str_comb_prop</span>(am <span class="op">==</span><span class="st"> </span><span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">                   <span class="dt">hp  =</span> <span class="kw">str_comb_intv</span>(<span class="kw">log2</span>(hp<span class="op">+</span><span class="dv">1</span>), <span class="dt">digits =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">mpg =</span> <span class="kw">summ_interval</span>(mpg),</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">                   <span class="dt">am  =</span> <span class="kw">summ_prop</span>(am <span class="op">==</span><span class="st"> </span><span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                   <span class="dt">hp  =</span> <span class="kw">summ_interval</span>(<span class="kw">log2</span>(hp<span class="op">+</span><span class="dv">1</span>), <span class="dt">digits =</span> <span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">                                      <span class="dt">limits =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span>t <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">format =</span> <span class="st">'html'</span>)  <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;hover&quot;</span>)</a></code></pre></div>
@@ -523,16 +545,16 @@ hp
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">X =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">na.ind =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">15</span>, <span class="dt">replace =</span> F)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">str_comb_NA</span>(X)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">summ_na</span>(X)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] &quot;-&quot;</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">str_comb_NA</span>(X, <span class="dt">zero2dash =</span> F)</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">summ_na</span>(X, <span class="dt">zero2dash =</span> F)</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [1] &quot;0 (0)&quot;</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9">X[na.ind] =<span class="st"> </span><span class="ot">NA</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">str_comb_NA</span>(X)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw">summ_na</span>(X)</a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; [1] &quot;15 (15)&quot;</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">str_comb_NA</span>(X, <span class="dt">out =</span> <span class="st">&quot;percentage&quot;</span>)</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw">summ_na</span>(X, <span class="dt">out =</span> <span class="st">&quot;percentage&quot;</span>)</a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; [1] &quot;15 (0.15)&quot;</span></a></code></pre></div>
 </div>
 
