@@ -4,13 +4,15 @@
 \alias{summ_na}
 \title{Count Missing and \% of Total}
 \usage{
-summ_na(x, digits = 1, out = c("percentage", "percent"),
-  zero2dash = T)
+summ_na(x, digits = 1, incl_denom = F, out = c("percentage",
+  "percent"), zero2dash = T)
 }
 \arguments{
 \item{x}{Vector}
 
 \item{digits}{Number of decimal points to round to}
+
+\item{incl_denom}{logical for inclusion of denominator in frequency}
 
 \item{out}{return percent or percentage}
 
