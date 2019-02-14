@@ -25,6 +25,7 @@
 #' # Different output based on arguments to `omit_na`
 #' cat_freqs(dat$Species) #omit_na = F default
 #' cat_freqs(dat$Species, omit_na = T)
+#' cat_freqs(dat$Species, incl_denom = T)
 
 cat_freqs = function(x, omit_na = F, NAname = NA, digits = 1,
                      incl_denom = F,
