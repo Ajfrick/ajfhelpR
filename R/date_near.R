@@ -21,6 +21,15 @@
 
 date_near = function(dates, target, thresh = Inf, onlypre = F,
                      sidepref, quiet = T){
+  uneven = 0
+  if(length(thresh) > 2){
+    warning("Threshold should be either length 1 or 2")
+    return(NA)
+  }
+  if(length(thresh) == 2) {
+    uneven = 1
+  }
+
   ##Basic options
   target = unique(target)
   if(is.character(target)){target = as.Date(target)}
@@ -34,7 +43,13 @@ date_near = function(dates, target, thresh = Inf, onlypre = F,
     dates = dates[dates < target]
   }
   dates = unique(sort(dates))
-  dates = dates[abs(dates-target)<thresh]
+  if(uneven){
+    diff = target - dates
+    dates = dates[dates > target - thresh[1] & dates < target + thresh[2]]
+  } else{
+    dates = dates[abs(dates-target)<thresh]
+  }
+
   delts = as.numeric(abs(dates-target))
   if(length(delts) == 0){
     if(!quiet){
