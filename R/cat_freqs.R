@@ -27,15 +27,15 @@
 #' cat_freqs(dat$Species, omit_na = T)
 #' cat_freqs(dat$Species, incl_denom = T)
 
-cat_freqs = function(x, omit_na = F, NAname = NA, digits = 1,
+cat_freqs = function(x, omit_na = T, NAname = NA, digits = 1,
                      incl_denom = F,
                      out = c("percentage","percent"),
                      perc_disp = F, escape = F,
                      zero2dash = T){
-
+    x2 = x
   if(missing(out)) out = "percent"
   if(omit_na){
-    x = na.omit(x)
+    x2 = na.omit(x)
   }
 
   n = length(x)
@@ -49,16 +49,16 @@ cat_freqs = function(x, omit_na = F, NAname = NA, digits = 1,
   cats = as.character(names(table(x, useNA = 'ifany')))
 
   tib = dplyr::tibble(
-    N = summ_prop(x %==% cats[1], digits = digits, out = out,
+    N = summ_prop(x2 %==% cats[1], digits = digits, out = out,
                   perc_disp = perc_disp, zero2dash = zero2dash,
                   incl_denom = incl_denom,escape = escape)
   )
   for(i in 2:M){
-    tib[i,1] = summ_prop(x %==% cats[i], digits = digits, out = out,
+    tib[i,1] = summ_prop(x2 %==% cats[i], digits = digits, out = out,
                          perc_disp = perc_disp, zero2dash = zero2dash,
                          incl_denom = incl_denom,escape = escape)
   }
-  if(omit_na | (sum(is.na(x)) == 0)){
+  if( (sum(is.na(x)) == 0)){
     tib = tib %>%
       dplyr::mutate(Cat = cats) %>%
       dplyr::select(Cat,N)
