@@ -1,9 +1,10 @@
 #' Create column for frequency distribution of data
 #' @param x vector of characters or factors
 #' @param omit_na logical for ommision of NAs in computation of counts and
-#' proportions
+#' proportions of non missing data
 #' @param digits number of digits to round
 #' @param incl_denom logical for inclusion of denominator when displaying frequencies
+#' @param remove_na logical for removal of frequency of missing data
 #' @param out single character representing output for proportion
 #' @param perc_disp logical for inclustion of \% sign
 #' @param escape logical for inclusion of escape character for LaTeX tables

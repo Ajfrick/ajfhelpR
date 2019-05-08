@@ -4,19 +4,21 @@
 \alias{cat_freqs}
 \title{Create column for frequency distribution of data}
 \usage{
-cat_freqs(x, omit_na = F, NAname = NA, digits = 1, incl_denom = F,
-  out = c("percentage", "percent"), perc_disp = F, escape = F,
-  zero2dash = T)
+cat_freqs(x, omit_na = T, NAname = NA, digits = 1, incl_denom = F,
+  remove_na = F, out = c("percentage", "percent"), perc_disp = F,
+  escape = F, zero2dash = T)
 }
 \arguments{
 \item{x}{vector of characters or factors}
 
 \item{omit_na}{logical for ommision of NAs in computation of counts and
-proportions}
+proportions of non missing data}
 
 \item{digits}{number of digits to round}
 
 \item{incl_denom}{logical for inclusion of denominator when displaying frequencies}
+
+\item{remove_na}{logical for removal of frequency of missing data}
 
 \item{out}{single character representing output for proportion}
 
