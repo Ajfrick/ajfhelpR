@@ -75,7 +75,9 @@ cat_freqs = function(x, omit_na = T, NAname = NA, digits = 1,
                              incl_denom = incl_denom,escape = escape)
    tib = tib %>%
       dplyr::mutate(Cat = cats) %>%
-      dplyr::select(Cat,N)
+      dplyr::select(Cat,N) %>%
+      dplyr::group_by(Cat) %>%
+      dplyr::slice(1)
 
    tib[is.na(tib$Cat),1] = NAname
 
