@@ -13,6 +13,7 @@
 #' a vector of logicals comparing to each place.
 #' @return vector of logicals
 #' @examples
+#' seed(3141)
 #' colors = c("red","blue")
 #' Col_Samp1 = sample(c(colors,NA), size = 10, replace = T, prob = c(.5,.2,.3))
 #' Col_Samp2 = sample(c(colors,NA), size = 10, replace = T, prob = c(.5,.2,.3))
