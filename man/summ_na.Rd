@@ -4,8 +4,13 @@
 \alias{summ_na}
 \title{Count Missing and \% of Total}
 \usage{
-summ_na(x, digits = 1, incl_denom = F, out = c("percentage",
-  "percent"), zero2dash = T)
+summ_na(
+  x,
+  digits = 1,
+  incl_denom = F,
+  out = c("percentage", "percent"),
+  zero2dash = T
+)
 }
 \arguments{
 \item{x}{Vector}

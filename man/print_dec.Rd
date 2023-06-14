@@ -9,7 +9,7 @@ print_dec(x, digits = 2)
 \arguments{
 \item{x}{Numeric Value}
 
-\item{digits}{NUmber of digits to force printed}
+\item{digits}{Number of digits to force printed}
 }
 \value{
 character representation of numeric value with desired number of floating points

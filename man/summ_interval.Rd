@@ -4,8 +4,7 @@
 \alias{summ_interval}
 \title{Create center with spread data summary for table}
 \usage{
-summ_interval(x, fun = median, digits = 2, delim = ",",
-  limits = c(0.25, 0.75))
+summ_interval(x, fun = median, digits = 2, delim = ",", limits = c(0.25, 0.75))
 }
 \arguments{
 \item{x}{Numeric Vector}

@@ -27,6 +27,7 @@ If left or right is length 1, it compares it to the entire other vector, returni
 a vector of logicals comparing to each place.
 }
 \examples{
+set.seed(3141)
 colors = c("red","blue")
 Col_Samp1 = sample(c(colors,NA), size = 10, replace = T, prob = c(.5,.2,.3))
 Col_Samp2 = sample(c(colors,NA), size = 10, replace = T, prob = c(.5,.2,.3))

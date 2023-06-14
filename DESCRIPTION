@@ -17,7 +17,7 @@ Imports:
     magrittr,
     MASS
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,

@@ -4,8 +4,7 @@
 \alias{date_count}
 \title{Count up Frequency between two dates}
 \usage{
-date_count(x, lower = "0001-01-01", upper = "4000-01-01", rel = F,
-  incl = F)
+date_count(x, lower = "0001-01-01", upper = "4000-01-01", rel = F, incl = F)
 }
 \arguments{
 \item{x}{vector of Date objects}

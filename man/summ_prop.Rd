@@ -4,9 +4,17 @@
 \alias{summ_prop}
 \title{Create count with proportion as string}
 \usage{
-summ_prop(x, category = NULL, omit_na = T, digits = 1,
-  incl_denom = F, out = c("percentage", "percent"), perc_disp = F,
-  escape = F, zero2dash = T)
+summ_prop(
+  x,
+  category = NULL,
+  omit_na = T,
+  digits = 1,
+  incl_denom = F,
+  out = c("percentage", "percent"),
+  perc_disp = F,
+  escape = F,
+  zero2dash = T
+)
 }
 \arguments{
 \item{x}{vector}
