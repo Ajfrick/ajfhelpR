@@ -1,5 +1,4 @@
 exportPattern("^[[:alpha:]]+")
 export("%==%")
-export("%&%")
 export("%or%")
 importFrom(magrittr,"%>%")
