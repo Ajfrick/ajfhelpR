@@ -57,7 +57,8 @@ cat_freqs = function(x, omit_na = T, NAname = NA, digits = 1,
     N = summ_prop(x2 %==% cats[1], digits = digits, out = out,
                   perc_disp = perc_disp, zero2dash = zero2dash,
                   incl_denom = incl_denom,escape = escape)
-  )
+  ) %>%
+    dplyr::slice(1)
   for(i in 2:M){
     tib[i,1] = summ_prop(x2 %==% cats[i], digits = digits, out = out,
                          perc_disp = perc_disp, zero2dash = zero2dash,
@@ -75,9 +76,7 @@ cat_freqs = function(x, omit_na = T, NAname = NA, digits = 1,
                              incl_denom = incl_denom,escape = escape)
    tib = tib %>%
       dplyr::mutate(Cat = cats) %>%
-      dplyr::select(Cat,N) %>%
-      dplyr::group_by(Cat) %>%
-      dplyr::slice(1)
+      dplyr::select(Cat,N)
 
    tib[is.na(tib$Cat),1] = NAname
 
